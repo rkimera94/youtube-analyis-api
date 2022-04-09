@@ -3,15 +3,14 @@ from crypt import methods
 from curses import flash, noecho
 from distutils.log import error
 from flask import Blueprint, request, flash
-from controllers.youtube_search import search_by_keyword
-
+from controllers.youtube_search import search_by_keyword, YouTubeData
+from config import DB_DETAILS
 
 search_youtube = Blueprint('search_keyword', __name__)
 
 # request.args['search_by'])
 
 
-@search_youtube.before_request
 @search_youtube.route('/keyword', methods=['GET'])
 def data():
     if request.method == 'GET':
@@ -23,3 +22,20 @@ def data():
             data = search_by_keyword(param)
 
     return data
+
+
+@search_youtube.route('/key', methods=['GET'])
+def search_keyword():
+    if request.method == 'GET':
+        param = ('request', request.args['search_by'])
+        API_KEY = DB_DETAILS['API_KEY']['API_KEY']
+        max_result = ('request', request.args['max_result'])
+
+        if not param:
+            error = 'Search Key word is Required'
+        else:
+            youTubeDataset = YouTubeData(API_KEY, param[1], max_result[1])
+            filter = youTubeDataset.get_data_by_search_keyword()
+            data = filter
+
+    return {"data": data}

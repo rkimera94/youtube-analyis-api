@@ -24,4 +24,8 @@ DB_DETAILS = {
         'DB_USER': config('DB_USERNAME'),
         'DB_PASS': config('DB_PASSWORD')
     },
+    'API_KEY': {
+        'API_KEY': config('API_KEY'),
+
+    },
 }
