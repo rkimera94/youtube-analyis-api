@@ -21,12 +21,10 @@ class YouTubeData:
         url = f'https://youtube.googleapis.com/youtube/v3/search?order=viewCount&q={self.search_keyword}&key={self.api_key}&maxResults={self.max_result}'
         json_url = requests.get(url)
         data = json.loads(json_url.text)
-
-        print('data', data)
-
         try:
             data = data['items']
             print('Number of videos', len(data))
+
         except:
             data = None
         self.search_youtube_data = data
