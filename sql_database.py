@@ -4,6 +4,7 @@ from datetime import datetime
 from email.encoders import encode_noop
 from sqlalchemy import Column, String, DateTime, Integer, create_engine
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
 import os
 from dotenv import load_dotenv
 load_dotenv()
@@ -36,6 +37,8 @@ connection_string = f'postgresql://{db_user}:{db_pass}@{db_host}:5432/{db_name}'
 
 engine = create_engine(connection_string, echo=True)
 
+# session maker
+Session = sessionmaker()
 
 ''' Video class'''
 
