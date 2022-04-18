@@ -1,11 +1,7 @@
-
-from crypt import methods
-from curses import flash, noecho
-from distutils.log import error
 from flask import Blueprint, request, flash
 from controllers.youtube_search import search_by_keyword, YouTubeData
 from controllers.youtube_load import LoadVideos
-
+from controllers.video_details import VideoDetails
 from config import DB_DETAILS
 
 search_youtube = Blueprint('search_keyword', __name__)
@@ -51,3 +47,12 @@ def load_video():
         filter = loadData.load_video()
 
         return{"data": filter}
+
+
+@search_youtube.route('/video-details', methods=['GET'])
+def load_details():
+    if request.method == 'GET':
+        get_videos = [3]
+        fetchData = VideoDetails(get_videos)
+        filter = fetchData.get_video_detail()
+        return {"data": filter}

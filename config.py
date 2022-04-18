@@ -28,4 +28,8 @@ DB_DETAILS = {
         'API_KEY': config('API_KEY'),
 
     },
+    'BASE_url': {
+        'BASE_url': config('BASE_url'),
+
+    },
 }
