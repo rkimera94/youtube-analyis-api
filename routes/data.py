@@ -39,3 +39,9 @@ def search_keyword():
             data = filter
 
     return {"data": data}
+
+
+@search_youtube.route('/load-video', methods=['POST'])
+def load_video():
+    if request.method == 'POST':
+        return{"data": {}}
