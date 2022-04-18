@@ -4,6 +4,8 @@ from curses import flash, noecho
 from distutils.log import error
 from flask import Blueprint, request, flash
 from controllers.youtube_search import search_by_keyword, YouTubeData
+from controllers.youtube_load import LoadVideos
+
 from config import DB_DETAILS
 
 search_youtube = Blueprint('search_keyword', __name__)
@@ -44,4 +46,8 @@ def search_keyword():
 @search_youtube.route('/load-video', methods=['POST'])
 def load_video():
     if request.method == 'POST':
-        return{"data": {}}
+        max_result = 40
+        loadData = LoadVideos(max_result)
+        filter = loadData.load_video()
+
+        return{"data": filter}
