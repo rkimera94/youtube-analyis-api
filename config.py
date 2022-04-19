@@ -1,4 +1,8 @@
 from decouple import config
+import os
+from dotenv import load_dotenv
+load_dotenv()
+
 
 DB_DETAILS = {
     'dev': {
@@ -33,3 +37,15 @@ DB_DETAILS = {
 
     },
 }
+
+
+db_user = os.getenv("DB_USERNAME")
+db_pass = os.getenv("DB_PASSWORD")
+db_host = os.getenv("DB_HOST")
+db_name = os.getenv("DB_DATABASE_NAME")
+
+
+basedir = os.path.abspath(os.path.dirname(__file__))
+SQLALCHEMY_ECHO = False
+SQLALCHEMY_TRACK_MODIFICATIONS = True
+SQLALCHEMY_DATABASE_URI = f"postgresql://{db_user}:{db_pass}@localhost/{db_name}"
