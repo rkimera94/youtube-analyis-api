@@ -16,14 +16,40 @@ class VideoDetails(object):
 
     def get_video_detail(self):
         get_video_details = []
-        filtered = local_session.query(Video).all()
+        all_video_details = []
+
+        filtered = local_session.query(Video).limit(3).all()
         data = videos_details_schema.dump(filtered)
         for v in data:
             videoId = v['video_id']
             url = f'{BASE_url}/videos?part=snippet&part=contentDetails&part=statistics&id={videoId}&key={API_KEY}'
             url_request = requests.get(url)
             json_data = json.loads(url_request.text)
-            print(json_data)
+
+            try:
+                statistics = json_data['items'][0]['statistics']
+
+                if 'contentDetails' in json_data['items'][0]:
+                    duration = json_data['items'][0]['contentDetails']['duration']
+                else:
+                    duration = 0
+
+                if 'tags' in json_data['items'][0]['snippet']:
+                    tags = json_data['items'][0]['snippet']['tags']
+                else:
+                    tags = []
+
+                id = json_data['items'][0]['id']
+
+                kind = json_data['items'][0]['kind']
+
+                video_dict = dict(
+                    {"id": id, "kind": kind, "statistics": statistics, "tags": tags, "duration": duration})
+
+                all_video_details.append(video_dict)
+            except:
+                all_video_details = None
 
         # return {'data': "Video Details Successfully Fetched"}
+        print(all_video_details)
         return data
