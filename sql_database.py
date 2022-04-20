@@ -48,6 +48,8 @@ class Video(Base):
     id = Column(Integer(), primary_key=True)
     video_id = Column(String(), unique=True)
     kind = Column(String(255), nullable=True)
+    title = Column(String(255), nullable=True)
+    channel_title = Column(String(255), nullable=True)
     created_at = Column(DateTime(), default=datetime.utcnow)
 
     def __repr__(self):

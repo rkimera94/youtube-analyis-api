@@ -25,4 +25,5 @@ class VideoDetails(object):
             json_data = json.loads(url_request.text)
             print(json_data)
 
-        return {'data': "Video Details Successfully Fetched"}
+        # return {'data': "Video Details Successfully Fetched"}
+        return data

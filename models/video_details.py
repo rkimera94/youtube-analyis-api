@@ -14,6 +14,8 @@ class Video(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     video_id = db.Column(db.String(255), unique=True)
     kind = db.Column(db.String(255), nullable=True)
+    title = db.Column(db.String(255), nullable=True)
+    channel_title = db.Column(db.String(255), nullable=True)
     created_at = db.Column(
         db.TIMESTAMP, server_default=db.func.current_timestamp(), nullable=False)
     updated_at = db.Column(

@@ -18,7 +18,7 @@ class YouTubeData:
 
     def get_data_by_search_keyword(self):
 
-        url = f'https://youtube.googleapis.com/youtube/v3/search?order=viewCount&q={self.search_keyword}&key={self.api_key}&maxResults={self.max_result}'
+        url = f'https://youtube.googleapis.com/youtube/v3/search?part=snippet&order=viewCount&q={self.search_keyword}&type=video&key={self.api_key}&maxResults={self.max_result}'
         json_url = requests.get(url)
         data = json.loads(json_url.text)
         try:
