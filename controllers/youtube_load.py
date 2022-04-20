@@ -1,3 +1,4 @@
+from turtle import title
 from .youtube_search import YouTubeData
 import requests
 from config import DB_DETAILS
@@ -19,17 +20,22 @@ class LoadVideos(object):
         API_KEY = DB_DETAILS['API_KEY']['API_KEY']
         max_result = ('request', request.args['max_result'])
 
+        # if param and max_result: -- param validation
+
         youTubeDataset = YouTubeData(API_KEY, param[1], max_result[1])
         filter = youTubeDataset.get_data_by_search_keyword()
         data = filter
 
+        print(data)
+
         for v in data:
 
             video_id = v['id']
+            video_title = v['snippet']
             if 'videoId' in video_id:
                 insert_data = Video(
-                    video_id=video_id['videoId'], kind=video_id['kind'])
+                    video_id=video_id['videoId'], kind=video_id['kind'], title=video_title['title'], channel_title=video_title['channelTitle'])
                 local_session.add(insert_data)
                 local_session.commit()
 
-        return {"message": "Data Loaded Successfully"}
+        return {"message": "Data Loaded Successfully", "data": data}
