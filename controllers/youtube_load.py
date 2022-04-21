@@ -25,9 +25,6 @@ class LoadVideos(object):
         youTubeDataset = YouTubeData(API_KEY, param[1], max_result[1])
         filter = youTubeDataset.get_data_by_search_keyword()
         data = filter
-
-        print(data)
-
         for v in data:
 
             video_id = v['id']

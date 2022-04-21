@@ -39,8 +39,8 @@ class VideoDetail(db.Model):
 
     video = db.relationship("Video", backref="video_details")
 
-    def __init__(self, id, view_count, like_count, favorite_count, comment_count):
-        self.id = id
+    def __init__(self, video_id, view_count, like_count, favorite_count, comment_count):
+        self.video_id = video_id
         self.view_count = view_count
         self.like_count = like_count
         self.favorite_count = favorite_count
