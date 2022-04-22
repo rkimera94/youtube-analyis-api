@@ -5,7 +5,8 @@ from config import DB_DETAILS
 from sql_database import Session, Video, engine
 from schema.video import VideoDetailsSchema, video_details_schema, videos_details_schema
 
-from models.video_details import VideoDetail, db
+from models.video_details import VideoDetail, db, VideoTags, VideoDuration
+from .video_class import VideoClass
 
 
 BASE_url = DB_DETAILS['BASE_url']['BASE_url']
@@ -20,7 +21,7 @@ class VideoDetails(object):
     def get_video_detail(self):
         all_video_details = []
 
-        filtered = local_session.query(Video).limit(40).all()
+        filtered = local_session.query(Video).limit(2).all()
 
         data = videos_details_schema.dump(filtered)
         for v in data:
@@ -47,7 +48,12 @@ class VideoDetails(object):
                 kind = json_data['items'][0]['kind']
 
                 video_dict = dict(
+
                     {"id": id, "kind": kind, "statistics": statistics, "tags": tags, "duration": duration})
+
+                video_class = VideoClass(video_dict)
+                video_tag = video_class.video_tag_load()
+                video_tag = video_class.video_duration_load()
 
                 video_stat = video_dict['statistics']
 
@@ -58,14 +64,14 @@ class VideoDetails(object):
                 db.session.add(insert_stat)
 
                 db.session.commit()
-                result = videos_details_schema.dump(insert_stat).data
 
+                # result = videos_details_schema.dump(insert_stat).data
                 # local_session.add(insert_data)
-
                 # local_session.commit()
 
                 all_video_details.append(video_dict)
-            except:
-                all_video_details = None
+            except Exception as error:
+                #all_video_details = None
+                return error
 
         return {'message': "Video Details Successfully Fetched", 'data': data}
