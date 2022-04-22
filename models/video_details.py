@@ -55,3 +55,62 @@ class VideoDetailSchema(ma.Schema):
     comment_count = fields.Integer(required=True)
     video_id = fields.String(required=True, validate=validate.Length(1))
     created_at = fields.DateTime()
+
+
+# video tags
+
+class VideoTags(db.Model):
+    __tablename__ = 'video_tags'
+
+    id = db.Column(db.Integer, primary_key=True)
+    video_id = db.Column(db.String(255), db.ForeignKey(
+        'yt_videos.video_id'))
+    tag = db.Column(db.String(255), nullable=False)
+
+    created_at = db.Column(
+        db.TIMESTAMP, server_default=db.func.current_timestamp(), nullable=False)
+    updated_at = db.Column(
+        db.TIMESTAMP, server_default=db.func.current_timestamp(), nullable=False)
+
+    video = db.relationship("Video", backref="video_tags")
+
+    def __init__(self, video_id, tag):
+        self.video_id = video_id
+        self.tag = tag
+
+
+class VideoTagsSchema(ma.Schema):
+    id = fields.Integer(dump_only=True)
+    tag = fields.String(required=True)
+    video_id = fields.String(required=True)
+    created_at = fields.DateTime()
+
+
+# duration
+
+
+class VideoDuration(db.Model):
+    __tablename__ = 'video_duration'
+
+    id = db.Column(db.Integer, primary_key=True)
+    video_id = db.Column(db.String(255), db.ForeignKey(
+        'yt_videos.video_id'), unique=True,)
+    video_duration = db.Column(db.Integer)
+
+    created_at = db.Column(
+        db.TIMESTAMP, server_default=db.func.current_timestamp(), nullable=False)
+    updated_at = db.Column(
+        db.TIMESTAMP, server_default=db.func.current_timestamp(), nullable=False)
+
+    video = db.relationship("Video", backref="video_duration")
+
+    def __init__(self, video_id, video_duration):
+        self.video_id = video_id
+        self.video_duration = video_duration
+
+
+class VideoDurationSchema(ma.Schema):
+    id = fields.Integer(dump_only=True)
+    video_duration = fields.Integer(required=True)
+    video_id = fields.String(required=True, validate=validate.Length(1))
+    created_at = fields.DateTime()
